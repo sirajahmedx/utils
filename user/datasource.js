@@ -282,8 +282,67 @@ async function deleteUserById(id) {
    }
 }
 
+async function getAllUsers() {
+   try {
+      const users = await UserModel.find();
+      console.log(users);
+      return {
+         success: true,
+         message: "Users fetched successfully",
+         data: users,
+      };
+   } catch (error) {
+      throw new Error(error.message);
+   }
+}
+
+async function findNearbyUsers() {
+   try {
+      const users = await UserModel.find({
+         role: "dropbox",
+         status: "active",
+      });
+
+      return {
+         success: true,
+         message: "Users fetched successfully",
+         data: users,
+      };
+   } catch (error) {
+      console.error("Error finding nearby users:", error);
+      throw error;
+   }
+}
+async function getUserByEmail(email) {
+   try {
+      return await UserModel.findOne({ email });
+   } catch (error) {
+      throw new Error(error.message);
+   }
+}
+
+async function getUserById(id) {
+   try {
+      console.log(id);
+      if (!id) throw new Error("Id is required");
+      const user = await UserModel.findById(id);
+      if (!user) throw new Error("User not found");
+      return {
+         success: true,
+         message: "User fetched successfully",
+         data: user,
+      };
+   } catch (error) {
+      throw new Error(error.message);
+   }
+}
+
 module.exports.UserService = {
+   getAllUsers,
+   findNearbyUsers,
    getUserToken,
+   getUserByEmail,
+   getUserById,
    createUser,
    updateUser,
    verifyEmail,
