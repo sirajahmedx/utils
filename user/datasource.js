@@ -299,7 +299,7 @@ async function getAllUsers() {
 async function findNearbyUsers() {
    try {
       const users = await UserModel.find({
-         role: "dropbox",
+         role: "user",
          status: "active",
       });
 
